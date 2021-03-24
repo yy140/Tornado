@@ -24,10 +24,10 @@ class LevelOneScene extends Phaser.Scene {
     this.platforms.create(50, 250, 'platform').setScale(0.6);
     this.platforms.create(750, 220, 'platform').setScale(0.6);
     this.platforms.immovable = true
-       
+//    this.platforms.refreshBody();
     this.blob = this.physics.add.image(200,400, "blob");
     this.blob.setScale(0.25);
-    this.blob.body.collideWorldBounds = true;
+    this.blob.body.collideWorldBounds(true);
     //this.physics.enable("blob");
 
     this.physics.add.collider(this.blob, this.platforms);
