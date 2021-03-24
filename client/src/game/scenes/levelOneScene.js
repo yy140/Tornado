@@ -23,14 +23,14 @@ class LevelOneScene extends Phaser.Scene {
     this.platforms.create(500, 400, 'platform').setScale(0.6);
     this.platforms.create(50, 250, 'platform').setScale(0.6);
     this.platforms.create(750, 220, 'platform').setScale(0.6);
-
+    this.platforms.immovable = true
        
     this.blob = this.physics.add.image(200,400, "blob");
     this.blob.setScale(0.25);
-    this.blob.body.collideWorldBounds = true
-    this.physics.enable("blob");
+    this.blob.body.collideWorldBounds = true;
+    //this.physics.enable("blob");
 
-    this.physics.arcade.collider(this.blob, this.platforms);
+    this.physics.add.collider(this.blob, this.platforms);
 
     //direction keys   
     this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
