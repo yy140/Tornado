@@ -11,6 +11,12 @@ function launch(containerId) {
         scene: [
             TitleScene, GameScene, LevelOneScene
         ],
+        physics: {
+            default: 'arcade',
+            arcade: {
+              gravity: { y: 300 }
+            }
+        },
         scale: {
             mode: Phaser.Scale.FIT,
             width: '100%',
@@ -18,6 +24,7 @@ function launch(containerId) {
         }
     });
 }
+
 
 export default launch;
 export { launch }

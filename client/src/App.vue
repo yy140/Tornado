@@ -22,7 +22,7 @@
     #app {
         font-family: 'Trebuchet MS';
         text-align: left;
-        background-color: rgb(158, 226, 226);
+        background-color: rgb(71, 84, 84);
         color: rgb(23, 228, 228);
         display: flex;
     }
