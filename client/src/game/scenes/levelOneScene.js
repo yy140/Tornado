@@ -19,10 +19,10 @@ class LevelOneScene extends Phaser.Scene {
     
     //add platforms
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(200, 800, 'platform').setScale(0.6);
-    this.platforms.create(500, 400, 'platform').setScale(0.6);
-    this.platforms.create(50, 250, 'platform').setScale(0.6);
-    this.platforms.create(750, 220, 'platform').setScale(0.6);
+    this.platforms.create(200, 800, 'platform').setScale(0.6).refreshBody();
+    this.platforms.create(500, 400, 'platform').setScale(0.6).refreshBody();
+    this.platforms.create(50, 250, 'platform').setScale(0.6).refreshBody();
+    this.platforms.create(750, 220, 'platform').setScale(0.6).refreshBody();
     this.platforms.immovable = true
        
     this.blob = this.physics.add.image(200,400, "blob");
