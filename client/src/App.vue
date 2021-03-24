@@ -27,17 +27,17 @@
     #app {
         font-family: 'Trebuchet MS';
         text-align: left;
-        background-color: black;
-        color: cyan;
+        background-color: rgb(183, 189, 65);
+        color: rgb(23, 228, 228);
         display: flex;
     }
     #game {
-        width: 50vw;
+        width: 60vw;
         height: 100vh;
     }
     #input {
-        width: 50vw;
-        height: 100vh;
+        width: 40vw;
+        height: 50vh;
     }
     #border {
         border-right: 2px solid cyan;

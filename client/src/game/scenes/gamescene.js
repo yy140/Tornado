@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import io from 'socket.io-client';
 
+
 export default class GameScene extends Phaser.Scene {
     constructor() {
         super({
@@ -30,3 +31,4 @@ export default class GameScene extends Phaser.Scene {
 
     }
 }
+

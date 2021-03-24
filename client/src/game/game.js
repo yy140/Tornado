@@ -1,5 +1,7 @@
 import Phaser from "phaser";
+import TitleScene from "./scenes/titleScene"
 import GameScene from "./scenes/gamescene";
+import LevelOneScene from "./scenes/levelOneScene";
 
 
 function launch(containerId) {
@@ -7,7 +9,7 @@ function launch(containerId) {
         type: Phaser.AUTO,
         parent: containerId,
         scene: [
-            GameScene
+            TitleScene, GameScene, LevelOneScene
         ],
         scale: {
             mode: Phaser.Scale.FIT,

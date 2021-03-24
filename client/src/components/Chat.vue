@@ -1,7 +1,7 @@
 <template>
     <div id="container">
         <div id="output">
-            <h1>STRUCT</h1>
+            <h1>Chat</h1>
             <p v-for="(text, index) in textOutput" :key="index">{{text}}</p>
         </div>
         <div id="input">
