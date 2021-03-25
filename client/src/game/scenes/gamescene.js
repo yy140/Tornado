@@ -3,6 +3,8 @@ import io from 'socket.io-client';
 var player;
 var platforms;
 var cursors;
+var stars;
+
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -15,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('sky', 'assets/sky2.jpg');
         this.load.image('ground', 'assets/platform.png');
-        this.load.image('diamond', 'assets/diamond.jpg');
+        this.load.image('star', 'assets/star.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth:32, frameHeight:48 });
     }
 
@@ -59,8 +61,23 @@ export default class GameScene extends Phaser.Scene {
         });
       
         cursors = this.input.keyboard.createCursorKeys();
-      
-        this.physics.add.collider(player, platforms);       
+
+        stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 }
+        });
+
+        stars.children.iterate(function (child) {
+
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        
+        });
+        
+        this.physics.add.collider(player, platforms);  
+        this.physics.add.collider(stars, platforms);    
+
+        this.physics.add.overlap(player, stars, collectStar, null, this);
     }
 
     update() {
@@ -84,5 +101,13 @@ export default class GameScene extends Phaser.Scene {
             player.setVelocityY(-330);
         }
     }
+
+
+    
 }
 
+function collectStar (player, star){
+    star.disableBody(true, true);
+  
+
+}
