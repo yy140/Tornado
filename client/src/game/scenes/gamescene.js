@@ -4,6 +4,8 @@ var player;
 var platforms;
 var cursors;
 var stars;
+var score = 0;
+var scoreText;
 
 
 export default class GameScene extends Phaser.Scene {
@@ -74,6 +76,8 @@ export default class GameScene extends Phaser.Scene {
         
         });
         
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000'});
+
         this.physics.add.collider(player, platforms);  
         this.physics.add.collider(stars, platforms);    
 
@@ -107,7 +111,8 @@ export default class GameScene extends Phaser.Scene {
 }
 
 function collectStar (player, star){
-    star.disableBody(true, true);
+  star.disableBody(true, true);
   
-
+  score+=10;
+  scoreText.setText('Score: ' + score)
 }
