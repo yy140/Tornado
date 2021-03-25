@@ -1,30 +1,23 @@
-const server = require('express')();
-const http = require('http').createServer(server);
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:8080",
-    methods: ["GET", "POST"]
-  }
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+
+app.use(express.static(__dirname + '/public'));
+ 
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
 });
+ 
 io.on('connection', function (socket) {
-  console.log('A user connected: ' + socket.id);
+  console.log('a user connected');
   
-  socket.on('send', function (text) {
-      let newText = "<" + socket.id + "> " + text;
-      if (text === 'struct card') {
-          io.emit('struct create', 130, 180)
-      };
-      if (text === 'struct token') {
-          io.emit('struct create', 100, 100)
-      };
-      io.emit('receive', newText);
-  });
-
   socket.on('disconnect', function () {
-      console.log('A user disconnected: ' + socket.id);
+    console.log('user disconnected');
   });
 });
 
-http.listen(3000, function () {
-  console.log('Server started!');
+server.listen(8081, function () {
+  console.log(`Listening on ${server.address().port}`);
 });
