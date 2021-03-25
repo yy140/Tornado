@@ -14,7 +14,6 @@ This project is simple Lorem ipsum dolor generator. -->
 ## Technologies
 Project is created with:
 * JavaScript
-* Vue
 * Phaser
 * Node
 * Express
@@ -33,3 +32,7 @@ $ npm start
 ## Links
 This is a link to our Trello Board
 This is a link to our team charter
+
+
+
+
