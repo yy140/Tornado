@@ -95,7 +95,9 @@ function create() {
   bombs = this.physics.add.group();
 
   scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000'});
-
+  gameOverText = this.add.text(400, 300, 'Game Over', { fontSize: '64px', fill: '#000'});
+  gameOverText.setOrigin(0.5)
+  gameOverText.visible = false
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(stars, platforms);
   this.physics.add.collider(bombs, platforms);
@@ -161,6 +163,8 @@ function hitBomb (player, bomb) {
   player.setTint(0xff0000);
 
   player.anims.play('turn');
-  
+
   gameOver = true;
+
+  gameOverText.visible = true;
 }
