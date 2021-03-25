@@ -27,10 +27,10 @@ var scoreText;
 var game = new Phaser.Game(config);
    
 function preload() {
-  this.load.image('sky', 'assets/sky2.jpg');
-  this.load.image('ground', 'assets/platform.png');
-  this.load.image('star', 'assets/star.png');
-  this.load.spritesheet('dude', 'assets/dude.png', { frameWidth:32, frameHeight:48 });
+  this.load.image('sky', '../assets/sky2.jpg');
+  this.load.image('ground', '../assets/platform.png');
+  this.load.image('star', '../assets/star.png');
+  this.load.spritesheet('dude', '../assets/dude.png', { frameWidth:32, frameHeight:48 });
 }
 
  
