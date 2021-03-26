@@ -50,8 +50,8 @@ var config = {
     mountains = this.add.tileSprite(0,0, 10000, 1200, 'mountains');
     city = this.add.tileSprite(0,0, 15000, 1200, 'city');
     sky.setScrollFactor(0);
-    mountains.setScrollFactor(0.5);
-    city.setScrollFactor(1.5);
+    mountains.setScrollFactor(0.2);
+    city.setScrollFactor(0.5);
   
     platforms = this.physics.add.staticGroup();
     var ground = platforms.create(250, 550, 'platform-500');
