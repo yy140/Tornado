@@ -1,0 +1,85 @@
+body{
+    background-color: #483D8B;
+  }
+  .bannerContainer {
+      position:relative;     
+  }
+  .carousel {
+      position:absolute;
+      top:0;    
+  }
+  .navbar {
+      position:absolute;
+      z-index:10;
+      background: rgba(0,0,0, 0.5) !important;
+      width:100%;
+  }
+  
+  
+  .navbar{
+      padding: 1.5rem;
+  }
+    
+  .navbar-nav li {
+      padding-right:30px
+  }
+    .nav-link {
+      font-size: 1.50rem !important;
+  }
+  
+  .carousel-caption  {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      
+  }
+  
+  .carousel-caption h1{
+    font-size: 500%;
+    text-shadow: 1px 1px 15px #000;
+  }
+  
+    
+  .carousel-caption h3{
+     font-size: 200%;
+     font-weight: 500;
+     text-shadow: 1px 1px 10px #000;
+  }
+  
+  .btn {
+      color: #483D8B;
+      border: #483D8B;
+      background-color: white;
+      padding: 20px 35px;
+      font-size: 20px;
+      cursor: pointer;
+      display: inline-block;
+  }
+  
+  .btn:hover {
+      background: #483D8B;
+  }
+  
+  .form-control-plaintext {
+      display: block;
+      width: 100%;
+      padding: .375rem 0;
+      margin-bottom: 0;
+      line-height: 1.5;
+      color: #212529;
+      background-color: white;
+      border: #483D8B;
+      border-width: 1px 0;
+  }
+  .card {
+      color:rgba(0,0,0, 0.5);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0,0,0,.125);
+      border-radius: .25rem;
+  }
