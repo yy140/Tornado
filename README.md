@@ -27,6 +27,9 @@ To run this project, install it locally using npm:
 <!-- ```
 $ cd ../lorem
 $ npm install
+$brew tap mongodb/brew
+$brew install mongodb-community@4.2
+$brew services start mongodb-community@4.2
 $ npm start
 ``` -->
 
