@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 router.get('/', (req, res, next) => {
-    res.render('game/gameIndex');
+    res.render('game/gameIndex', {name: req.session.user.username});
 });
   router.get('/1', (req, res, next) => {
     res.render('game/game1');
