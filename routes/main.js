@@ -15,9 +15,13 @@ router.get('/signup', function (req, res) {
 router.post('/signup', asyncMiddleware( async (req, res, next) => {
   var { username, password } = req.body;
     await User.create({ username, password });
-  res.redirect('/')
+  res.redirect('/login')
 }));
- 
+
+router.get('/login', function (req, res) {
+  res.render('log-in');
+});
+
 router.post('/login', (req, res, next) => {
   console.log(req.body.username)
       User.findOne({
