@@ -6,7 +6,9 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var path = require('path');
 var exphbs = require('express-handlebars');
-
+var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
+var session = require('express-session');
 var mongoose = require('mongoose');
 
  var mongoDb = process.env.MONGODB_URL || 'mongodb://localhost:27017/tornado';
@@ -33,12 +35,39 @@ var gameRouter = require('./routes/game')
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname + '/public')));
+app.use(morgan('dev'));
+app.use(cookieParser());
+
+app.use(session({
+  key: 'user_sid',
+  secret: 'secrets',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      expires: 600000
+  }
+}));
+
+app.use((req, res, next) => {
+  if (req.cookies.user_sid && !req.session.user) {
+      res.clearCookie('user_sid');        
+  }
+  next();
+});
+
+var sessionChecker = (req, res, next) => {
+  if (req.session.user && req.cookies.user_sid) {
+    next();
+  } else {
+    res.redirect('/');
+  }    
+};
 
 
 //set up routes
 app.use('/', router);
-app.use('/score', scoreRouter);
-app.use('/game', gameRouter);
+app.use('/score', sessionChecker, scoreRouter);
+app.use('/game', sessionChecker, gameRouter);
 
 // catch all other routes
 app.use((req, res, next) => {

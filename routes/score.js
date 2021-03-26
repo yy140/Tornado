@@ -1,6 +1,6 @@
 var express = require('express');
 var asyncMiddleware = require('../middleware/asyncMiddleware');
-var UserModel = require('../models/userModel');
+var UserModel = require('../models/users');
  
 var router = express.Router();
  
