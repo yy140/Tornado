@@ -14,9 +14,17 @@ var config = {
       preload: preload,
       create: create,
       update: update
-    } 
+    },
+    scale: {
+      parent: 'myGame',
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 800,
+      height: 600
+    }
 };
-   
+
+
+
 var player;
 var platforms;
 var stars;
@@ -30,7 +38,6 @@ var isPaused= false;
 var game = new Phaser.Game(config);
    
 function preload() {
-
   this.load.image('sky', '../assets/sky2.jpg');
   this.load.image('ground', '../assets/platform.png');
   this.load.image('star', '../assets/star.png');
@@ -126,6 +133,8 @@ function create() {
 }
    
 function update() {
+  
+
   if (gameOver){
     return;
   }

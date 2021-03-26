@@ -1,21 +1,27 @@
 var config = {
-  type: Phaser.AUTO,
-  // parent: 'phaser-example',
-  width: 1000,
-  height: 600,
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 400 },
-      debug: false
+    type: Phaser.AUTO,
+    // parent: 'phaser-example',
+    width: 1000,
+    height: 600,
+    physics: {
+      default: 'arcade',
+      arcade: {
+        gravity: { y: 400 },
+        debug: false
+      }
+    },
+    scene: {
+      preload: preload,
+      create: create,
+      update: update
+    },
+    scale: {
+      parent: 'myGame',
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 800,
+      height: 600
     }
-  },
-  scene: {
-    preload: preload,
-    create: create,
-    update: update
-  } 
-};
+  };
  
 var game = new Phaser.Game(config);
 
