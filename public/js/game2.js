@@ -14,7 +14,13 @@ var config = {
       preload: preload,
       create: create,
       update: update
-    } 
+    },
+    scale: {
+      parent: 'myGame',
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 800,
+      height: 600
+    }
   };
    
   var game = new Phaser.Game(config);
