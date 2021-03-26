@@ -18,7 +18,7 @@ var config = {
     scale: {
       parent: 'myGame',
       autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: 800,
+      width: 100,
       height: 600
     }
   };
