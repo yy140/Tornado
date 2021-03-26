@@ -8,6 +8,10 @@ router.get('/', function (req, res) {
   res.render('index');
 });
 
+router.get('/signup', function (req, res) {
+  res.render('sign-up');
+});
+
 router.post('/signup', asyncMiddleware( async (req, res, next) => {
   var { username, password } = req.body;
     await User.create({ username, password });
