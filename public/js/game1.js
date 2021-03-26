@@ -14,9 +14,17 @@ var config = {
       preload: preload,
       create: create,
       update: update
-    } 
+    },
+    scale: {
+      parent: 'myGame',
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+      width: 800,
+      height: 600
+    }
 };
-   
+
+
+
 var player;
 var platforms;
 var stars;
@@ -25,12 +33,11 @@ var score = 0;
 var scoreText;
 var bombs;
 var gameOver = false;
-
+var isPaused= false;
 
 var game = new Phaser.Game(config);
    
 function preload() {
-
   this.load.image('sky', '../assets/sky2.jpg');
   this.load.image('ground', '../assets/platform.png');
   this.load.image('star', '../assets/star.png');
@@ -49,6 +56,24 @@ function create() {
   platforms.create(600, 400, 'ground');
   platforms.create(50, 300, 'ground');
   platforms.create(750, 220, 'ground');
+
+  pause_text = this.add.text(700, 20, 'Pause', { fontSize: '16px', fill: '#000'}).setScrollFactor(0);
+  pause_text.setInteractive();
+
+  pause_text.on('pointerdown', () => { 
+    if (isPaused == false){
+      this.physics.pause();
+      player.anims.stop();
+
+      pause_text.setText('Resume')
+    }
+    else{
+      this.physics.resume();
+      pause_text.setText('Pause')
+    }
+    isPaused = !isPaused;
+    
+  });
 
   player = this.physics.add.sprite(100, 450, 'dude');
 
@@ -108,21 +133,23 @@ function create() {
 }
    
 function update() {
+  
+
   if (gameOver){
     return;
   }
 
-  if (cursors.left.isDown){
+  if (cursors.left.isDown  && isPaused==false){
     player.setVelocityX(-160);
 
     player.anims.play('left', true);
   }
-  else if (cursors.right.isDown){
+  else if (cursors.right.isDown  && isPaused==false){
     player.setVelocityX(160);
 
     player.anims.play('right', true);
   }
-  else{
+  else if ( isPaused==false){
     player.setVelocityX(0);
 
     player.anims.play('turn');

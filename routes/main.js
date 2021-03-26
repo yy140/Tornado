@@ -49,10 +49,14 @@ router.post('/login', (req, res, next) => {
     })
     });
  
-// router.post('/logout', (req, res, next) => {
-//   res.status(200);
-//   res.json({ 'status': 'ok' });
-// });
+router.get('/logout', (req, res, next) => {
+  if (req.session.user && req.cookies.user_sid) {
+    res.clearCookie("user_sid");
+    res.redirect("/");
+  } else {
+    res.redirect("/login");
+  }
+});
  
 // router.post('/token', (req, res, next) => {
 //   res.status(200);
