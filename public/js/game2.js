@@ -7,7 +7,7 @@ var config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 400 },
-      debug: false
+      debug: true
     }
   },
   scene: {
@@ -34,13 +34,17 @@ var foreground;
 var platformGroup;
 var pause_label;
 var pause_text;
+var trust_text;
 var isPaused = false;
 var acid;
 var gameOver = false;
+var bird;
 
 function preload() {
 
 this.load.spritesheet('dude', '../assets/dude.png', { frameWidth:32, frameHeight:48 });
+this.load.spritesheet('bird', '../assets/game_2/bird_sheet.png', { frameWidth:32, frameHeight:48 });
+this.load.spritesheet('bird_left', '../assets/game_2/bird_sheet_left.png', { frameWidth:32, frameHeight:48 });
 this.load.image('bg', '../assets/game_2/bg.png');
 this.load.image('buildings', '../assets/game_2/buildings.png');
 this.load.image('far_buildings', '../assets/game_2/far-buildings.png');
@@ -94,6 +98,8 @@ function create() {
     
   });
 
+  trust_text = this.add.text(1400, 300, 'Just jump...trust me', { fontSize: '16px', fill: '#000'});
+
   platforms = this.physics.add.staticGroup();
   platforms.create(0, 500, 'platform-100');
   platforms.create(200, 500, 'platform-100');
@@ -106,13 +112,29 @@ function create() {
   platforms.create(1150, 475, 'platform-50');
   platforms.create(1350, 500, 'platform-50');
 
-  player = this.physics.add.sprite(100, 300, 'dude');
+  player = this.physics.add.sprite(25, 300, 'dude');
   player.setOrigin(0.5,0.5)
 
   player.setBounce(0.01);
   player.setCollideWorldBounds(true);
   cursors = this.input.keyboard.createCursorKeys();
 
+  bird = this.physics.add.sprite(200, 500, 'bird');
+  bird.body.setAllowGravity(false);
+ //bird.setVelocityX(-10);
+
+  this.anims.create({ key: 'fly_right', 
+    frames: this.anims.generateFrameNumbers('bird', {start:0, end:8}), 
+    frameRate: 10, 
+    repeat: -1 
+  });
+  this.anims.create({ key: 'fly_left', 
+    frames: this.anims.generateFrameNumbers('bird_left', {start:0, end:8}), 
+    frameRate: 10, 
+    repeat: -1 
+  });
+  
+  
 
   this.anims.create({
     key: 'left',
@@ -147,8 +169,15 @@ function create() {
   }
 
   function update(){
-    //console.log(player.body.position)
     
+    bird_velocity()
+
+    if(bird.body.position.x < player.body.position.x){
+      bird.anims.play('fly_right', true);
+    }
+    else{
+      bird.anims.play('fly_left', true);
+    }
     if (gameOver){
       return;
     }
@@ -185,7 +214,7 @@ function create() {
 
 function touch_acid() {
   
-  //console.log('touching acid')
+
   this.physics.pause();
 
   player.setTint(0xff0000);
@@ -195,4 +224,13 @@ function touch_acid() {
   gameOver = true;
 
   gameOverText.visible = true;
+}
+
+function bird_velocity(){
+  bird.body.position.x = bird.body.position.x + 0.001*(player.body.position.x - bird.body.position.x);
+
+  bird.body.position.y =  bird.body.position.y + 0.001*(player.body.y - bird.body.position.y);
+  console.log(bird.setVelocityX);
+  console.log(bird.setVelocityY);
+
 }
