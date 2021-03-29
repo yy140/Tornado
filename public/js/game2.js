@@ -7,7 +7,7 @@ var config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 400 },
-      debug: false
+      debug: true
     }
   },
   scene: {
@@ -42,6 +42,8 @@ var bird;
 var moving_platform_1;
 var moving_platform_2;
 var theta = 0;
+var saw;
+var direction;
 
 function preload() {
 
@@ -61,6 +63,7 @@ this.load.image('platform-300', '../assets/game_2/platform-300w.png');
 this.load.image('platform-400', '../assets/game_2/platform-400w.png');
 this.load.image('platform-500', '../assets/game_2/platform-500w.png');
 this.load.image('acid_1', '../assets/game_2/acid_1.png');
+this.load.image('saw', '../assets/game_2/saw.png');
 
 this.cursors = this.input.keyboard.createCursorKeys();
 }
@@ -132,6 +135,9 @@ function create() {
   moving_platform_2 = this.physics.add.sprite(3300,300, 'platform-50').setImmovable(true);
   moving_platform_2.body.setAllowGravity(false);
  
+  saw = this.physics.add.sprite(2400,475, 'saw');
+  saw.body.setAllowGravity(false);
+  saw.body.velocity.x = 50;
   
 
   player = this.physics.add.sprite(25, 300, 'dude');
@@ -192,6 +198,7 @@ function create() {
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(player, moving_platform_1);
   this.physics.add.collider(player, moving_platform_2);
+  this.physics.add.collider(player, saw, player_die, null, this);
   this.physics.add.collider(player, acid, player_die, null, this);
   this.physics.add.collider(player, bird, player_die, null, this);
   
@@ -203,7 +210,13 @@ function create() {
     theta+=0.01;
     update_moving_platform()
     
-    update_bird()
+    update_bird();
+    if(saw.body.position.x>2620){
+      saw.body.velocity.x *=-1
+    }
+    if(saw.body.position.x<2120){
+      saw.body.velocity.x *=-1
+    }
 
     
     if (gameOver){
@@ -273,3 +286,4 @@ function update_moving_platform(){
   moving_platform_2.body.position.x += Math.cos(theta);
   moving_platform_2.body.position.y += Math.sin(-theta*2);
 }
+
