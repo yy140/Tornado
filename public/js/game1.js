@@ -119,9 +119,17 @@ function create() {
   bombs = this.physics.add.group();
 
   scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000'});
-  gameOverText = this.add.text(400, 300, 'Game Over', { fontSize: '64px', fill: '#000'});
-  gameOverText.setOrigin(0.5)
+  gameOverText = this.add.text(400, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'}).setScrollFactor(0);
+  gameOverText.setOrigin(0.5).setInteractive();
   gameOverText.visible = false
+  gameOverText.on('pointerdown', () => { 
+    gameOver = false;
+    this.registry.destroy(); // destroy registry
+    this.events.off(); // disable all active events
+    this.scene.restart(); // restart current scen
+    score = 0;
+  });
+
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(stars, platforms);
   this.physics.add.collider(bombs, platforms);
