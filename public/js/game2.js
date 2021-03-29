@@ -49,12 +49,12 @@ this.load.image('bg', '../assets/game_2/bg.png');
 this.load.image('buildings', '../assets/game_2/buildings.png');
 this.load.image('far_buildings', '../assets/game_2/far-buildings.png');
 this.load.image('foreground', '../assets/game_2/skill-foreground.png');
-this.load.image('platform-50', '../assets/platform-050w.png');
-this.load.image('platform-100', '../assets/platform-100w.png');
-this.load.image('platform-200', '../assets/platform-200w.png');
-this.load.image('platform-300', '../assets/platform-300w.png');
-this.load.image('platform-400', '../assets/platform-400w.png');
-this.load.image('platform-500', '../assets/platform-500w.png');
+this.load.image('platform-50', '../assets/game_2/platform-50w.png');
+this.load.image('platform-100', '../assets/game_2/platform-100w.png');
+this.load.image('platform-200', '../assets/game_2/platform-200w.png');
+this.load.image('platform-300', '../assets/game_2/platform-300w.png');
+this.load.image('platform-400', '../assets/game_2/platform-400w.png');
+this.load.image('platform-500', '../assets/game_2/platform-500w.png');
 this.load.image('acid_1', '../assets/game_2/acid_1.png');
 
 this.cursors = this.input.keyboard.createCursorKeys();
@@ -87,8 +87,9 @@ function create() {
   pause_text.on('pointerdown', () => { 
     if (isPaused == false){
       this.physics.pause();
+      bird.anims.stop();
       player.anims.stop();
-      pause_text.setText('Resume')
+      pause_text.setText('Resume');
     }
     else{
       this.physics.resume();
@@ -121,7 +122,6 @@ function create() {
 
   bird = this.physics.add.sprite(200, 500, 'bird');
   bird.body.setAllowGravity(false);
- //bird.setVelocityX(-10);
 
   this.anims.create({ key: 'fly_right', 
     frames: this.anims.generateFrameNumbers('bird', {start:0, end:8}), 
@@ -156,13 +156,20 @@ function create() {
     repeat: -1
   });
 
-  gameOverText = this.add.text(400, 300, 'Game Over', { fontSize: '64px', fill: '#000'});
-  gameOverText.setOrigin(0.5)
+  gameOverText = this.add.text(400, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'}).setScrollFactor(0);
+  gameOverText.setOrigin(0.5).setInteractive();
   gameOverText.visible = false
+  gameOverText.on('pointerdown', () => { 
+    gameOver = false;
+    this.registry.destroy(); // destroy registry
+    this.events.off(); // disable all active events
+    this.scene.restart(); // restart current scen
+  });
 
   this.cameras.main.startFollow(player, true);
   this.physics.add.collider(player, platforms);
-  this.physics.add.collider(player, acid, touch_acid, null, this);
+  this.physics.add.collider(player, acid, player_die, null, this);
+  this.physics.add.collider(player, bird, player_die, null, this);
   
 
 
@@ -170,14 +177,9 @@ function create() {
 
   function update(){
     
-    bird_velocity()
+    update_bird()
 
-    if(bird.body.position.x < player.body.position.x){
-      bird.anims.play('fly_right', true);
-    }
-    else{
-      bird.anims.play('fly_left', true);
-    }
+    
     if (gameOver){
       return;
     }
@@ -212,7 +214,7 @@ function create() {
 
 };
 
-function touch_acid() {
+function player_die() {
   
 
   this.physics.pause();
@@ -220,17 +222,22 @@ function touch_acid() {
   player.setTint(0xff0000);
 
   player.anims.play('turn');
-
+  bird.anims.stop();
   gameOver = true;
 
   gameOverText.visible = true;
 }
 
-function bird_velocity(){
-  bird.body.position.x = bird.body.position.x + 0.001*(player.body.position.x - bird.body.position.x);
-
-  bird.body.position.y =  bird.body.position.y + 0.001*(player.body.y - bird.body.position.y);
-  console.log(bird.setVelocityX);
-  console.log(bird.setVelocityY);
+function update_bird(){
+  if(isPaused == false){
+    if(bird.body.position.x < player.body.position.x){
+      bird.anims.play('fly_right', true);
+    }
+    else{
+      bird.anims.play('fly_left', true);
+    }
+    bird.body.position.x = bird.body.position.x + 0.006*(player.body.position.x - bird.body.position.x);
+    bird.body.position.y =  bird.body.position.y + 0.006*(player.body.y - bird.body.position.y);
+  }
 
 }
