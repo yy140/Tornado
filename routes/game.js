@@ -34,6 +34,14 @@ if (req.session.user && req.cookies.user_sid) {
 }
   });
 
+  router.get('/3', (req, res, next) => {
+    if (req.session.user && req.cookies.user_sid) {
+      res.render('game/game3');
+    } else {
+      res.redirect('/login');
+    }
+      });
+
 
 
 
