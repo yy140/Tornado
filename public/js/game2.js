@@ -23,6 +23,7 @@ var config = {
   }
 };
 
+//go through and make these local if poss
 var game = new Phaser.Game(config);
 
 var player;
@@ -42,10 +43,13 @@ var bird;
 var moving_platform_1;
 var moving_platform_2;
 var theta = 0;
+var saw;
+var direction;
+
 
 function preload() {
 
-this.load.spritesheet('dude', '../assets/dude.png', { frameWidth:32, frameHeight:48 });
+this.load.spritesheet('dude', '../assets/game_2/dude.png', { frameWidth:32, frameHeight:48 });
 this.load.spritesheet('bird', '../assets/game_2/bird_sheet.png', { frameWidth:32, frameHeight:48 });
 this.load.spritesheet('bird_left', '../assets/game_2/bird_sheet_left.png', { frameWidth:32, frameHeight:48 });
 this.load.image('bg', '../assets/game_2/bg.png');
@@ -61,12 +65,14 @@ this.load.image('platform-300', '../assets/game_2/platform-300w.png');
 this.load.image('platform-400', '../assets/game_2/platform-400w.png');
 this.load.image('platform-500', '../assets/game_2/platform-500w.png');
 this.load.image('acid_1', '../assets/game_2/acid_1.png');
+this.load.image('saw', '../assets/game_2/saw.png');
 
 this.cursors = this.input.keyboard.createCursorKeys();
 }
 
 function create() {
-
+  this.resources = 0;
+  this.timer = 0;
 
   this.physics.world.setBounds(0, 0, 5000, 600);
   this.cameras.main.setBounds(0, 0, 5000, 600);
@@ -105,8 +111,8 @@ function create() {
   });
 
   trust_text = this.add.text(1400, 300, 'Just jump...trust me', { fontSize: '16px', fill: '#000'});
-
-  trust_text = this.add.text(1800, 300, 'Mind the gap', { fontSize: '16px', fill: '#000'});
+  gap_text = this.add.text(1800, 300, 'Mind the gap', { fontSize: '16px', fill: '#000'});
+  count_down_text=this.add.text(300, 200, 'Survive the countdown ', { fontSize: '48px', fill: '#e62e00'});
 
   platforms = this.physics.add.staticGroup();
   platforms.create(0, 500, 'platform-100');
@@ -132,6 +138,9 @@ function create() {
   moving_platform_2 = this.physics.add.sprite(3300,300, 'platform-50').setImmovable(true);
   moving_platform_2.body.setAllowGravity(false);
  
+  saw = this.physics.add.sprite(2400,475, 'saw');
+  saw.body.setAllowGravity(false);
+  saw.body.velocity.x = 50;
   
 
   player = this.physics.add.sprite(25, 300, 'dude');
@@ -192,6 +201,7 @@ function create() {
   this.physics.add.collider(player, platforms);
   this.physics.add.collider(player, moving_platform_1);
   this.physics.add.collider(player, moving_platform_2);
+  this.physics.add.collider(player, saw, player_die, null, this);
   this.physics.add.collider(player, acid, player_die, null, this);
   this.physics.add.collider(player, bird, player_die, null, this);
   
@@ -199,17 +209,30 @@ function create() {
 
   }
 
-  function update(){
-    theta+=0.01;
-    update_moving_platform()
-    
-    update_bird()
-
-    
+  function update(time,delta){
     if (gameOver){
       return;
     }
+    this.timer += delta;
+    while (this.timer > 1000) {
+        this.resources += 1;
+        this.timer -= 1000;
+    }
+   
+    theta+=0.01;
+    update_moving_platforms()
+    
+    update_bird();
 
+    if(saw.body.position.x>2620){
+      saw.body.velocity.x *=-1
+    }
+    if(saw.body.position.x<2120){
+      saw.body.velocity.x *=-1
+    }
+
+    
+    
     if (cursors.left.isDown && isPaused==false){
       player.setVelocityX(-160);
 
@@ -228,6 +251,7 @@ function create() {
     const didPressJump = Phaser.Input.Keyboard.JustDown(cursors.up);
 
     if (didPressJump){
+      this.canDoubleJump=true;
       if (cursors.up.isDown && (player.body.onFloor() || player.body.touching.down)){
         this.canDoubleJump = true;
         player.body.setVelocityY(-300);
@@ -267,9 +291,10 @@ function update_bird(){
   }
 
 }
-function update_moving_platform(){
+function update_moving_platforms(){
   moving_platform_1.body.position.x += Math.cos(theta);
   moving_platform_1.body.position.y += Math.sin(theta*2);
   moving_platform_2.body.position.x += Math.cos(theta);
   moving_platform_2.body.position.y += Math.sin(-theta*2);
 }
+
