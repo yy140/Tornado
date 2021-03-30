@@ -13,7 +13,7 @@ var mongoose = require('mongoose');
 
 // setup mongo connection
 const uri = process.env.MONGO_CONNECTION_URI;
-mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true });
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.on('error', (error) => {
   console.log(error);
   process.exit(1);
