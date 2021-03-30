@@ -49,7 +49,7 @@ var direction;
 
 function preload() {
 
-this.load.spritesheet('dude', '../assets/dude.png', { frameWidth:32, frameHeight:48 });
+this.load.spritesheet('dude', '../assets/game_2/dude.png', { frameWidth:32, frameHeight:48 });
 this.load.spritesheet('bird', '../assets/game_2/bird_sheet.png', { frameWidth:32, frameHeight:48 });
 this.load.spritesheet('bird_left', '../assets/game_2/bird_sheet_left.png', { frameWidth:32, frameHeight:48 });
 this.load.image('bg', '../assets/game_2/bg.png');
