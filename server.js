@@ -11,7 +11,7 @@ var morgan = require('morgan');
 var session = require('express-session');
 var mongoose = require('mongoose');
 
- var mongoDb = process.env.MONGODB_URL || 'mongodb://localhost:27017/tornado';
+ var mongoDb = process.env.MONGODB_URI || 'mongodb://localhost:27017/tornado';
  mongoose.connect(mongoDb, {
    useNewUrlParser: true,
    useUnifiedTopology: true
