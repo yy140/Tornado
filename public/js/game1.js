@@ -38,24 +38,75 @@ var isPaused= false;
 var game = new Phaser.Game(config);
    
 function preload() {
-  this.load.image('sky', '../assets/sky2.jpg');
-  this.load.image('ground', '../assets/platform.png');
-  this.load.image('star', '../assets/star.png');
-  this.load.image('bomb', '../assets/bomb.png');
-  this.load.spritesheet('dude', '../assets/dude.png', { frameWidth:32, frameHeight:48 });
+  this.load.image('bg', '../assets/game_1/BG.png');
+  this.load.image('platform', '../assets/game_1/14.png');
+  this.load.image('platform2', '../assets/game_1/15.png');
+  this.load.image('platform3', '../assets/game_1/16.png');
+  this.load.image('stoneBlock', '../assets/game_1/StoneBlock.png');
+  this.load.image('star', '../assets/game_1/star.png');
+  this.load.image('bomb', '../assets/game_1/bomb.png');
+  this.load.image('ground', '../assets/game_1/1.png');
+  this.load.image('ground2', '../assets/game_1/2.png');
+  this.load.image('ground3', '../assets/game_1/3.png');
+  this.load.image('crate', '../assets/game_1/Crate.png');
+  this.load.image('stone', '../assets/game_1/Stone.png');
+  this.load.image('skeleton', '../assets/game_1/Skeleton.png');
+  this.load.image('tree', '../assets/game_1/Tree.png');
+  this.load.image('bush1', '../assets/game_1/Bush (1).png');
+  this.load.image('bush2', '../assets/game_1/Bush (2).png');
+  this.load.image('cactus1', '../assets/game_1/Cactus (1).png');
+  this.load.image('cactus2', '../assets/game_1/Cactus (2).png');
+  this.load.image('cactus3', '../assets/game_1/Cactus (3).png');
+  this.load.image('grass1', '../assets/game_1/Grass (1).png');
+  this.load.image('grass2', '../assets/game_1/Grass (2).png');
+  this.load.spritesheet('dude', '../assets/game_1/dude.png', { frameWidth:32, frameHeight:48 });
 }
 
 function create() {
   // this.socket = io();
-  this.add.image(400, 300, 'sky');
+  this.add.image(400, 300, 'bg');
     
   platforms = this.physics.add.staticGroup();
     
-  platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+  platforms.create(60, 588, 'ground');
+  platforms.create(185,588, 'ground2');
+  platforms.create(310, 588, 'ground2');
+  platforms.create(435, 588, 'ground2');
+  platforms.create(560, 588, 'ground2');
+  platforms.create(685, 588, 'ground2');
+  platforms.create(810, 588, 'ground3');
 
-  platforms.create(600, 400, 'ground');
-  platforms.create(50, 300, 'ground');
-  platforms.create(750, 220, 'ground');
+  platforms.create(350, 380, 'platform').setScale(0.5).setSize(60, 25).setOffset(35, 25);
+  platforms.create(412, 380, 'platform2').setScale(0.5).setSize(60, 45).setOffset(35, 25);
+  platforms.create(475, 380, 'platform2').setScale(0.5).setSize(60, 45).setOffset(35, 25);
+  platforms.create(535, 380, 'platform3').setScale(0.5).setSize(60, 25).setOffset(35, 25);
+
+  platforms.create(28 ,231.5, 'ground2').setScale(0.5).setSize(64, 63).setOffset(30,33);
+  platforms.create(92 ,231.5, 'ground2').setScale(0.5).setSize(64, 63).setOffset(30,33);
+  platforms.create(156 ,231.5, 'ground3').setScale(0.5).setSize(64, 63).setOffset(30,33);
+
+  platforms.create(750, 200, 'platform2');
+  platforms.create(625, 200, 'platform').setSize(120, 50).setOffset(0, 2);
+
+  platforms.create(244, 488, 'crate').setScale(0.7).setSize(68, 69).setOffset(18, 18);
+  platforms.create(510, 326, 'crate').setScale(0.6).setSize(60, 63).setOffset(19, 19);
+  platforms.create(700, 493, 'crate').setScale(0.6).setSize(60, 63).setOffset(19, 19);
+
+  decoration = this.physics.add.staticGroup();
+
+  decoration.create(28, 486, 'stone');
+  decoration.create(660, 510, 'stone').setScale(0.5);
+  decoration.create(80, 510,'skeleton').setScale(0.6);
+  decoration.create(400, 280, 'tree').setScale(0.6);
+  decoration.create(370, 340, 'grass1').setScale(0.7);
+  decoration.create(60, 143, 'cactus1');
+  decoration.create(95, 174, 'bush2').setScale(0.7);
+  decoration.create(680, 110, 'bush1');
+  decoration.create(490, 487, 'bush2')
+  decoration.create(450, 476, 'cactus3');
+  decoration.create(450, 333, 'grass2');
+  decoration.create(700, 142, 'skeleton').setScale(0.6);
+  decoration.create(30, 182, 'cactus2').setScale(0.8);
 
   pause_text = this.add.text(700, 20, 'Pause', { fontSize: '16px', fill: '#000'}).setScrollFactor(0);
   pause_text.setInteractive();
