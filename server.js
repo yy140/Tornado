@@ -12,7 +12,7 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 
 // setup mongo connection
-const uri = process.env.MONGO_CONNECTION_URL;
+const uri = process.env.MONGO_CONNECTION_URI;
 mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true });
 mongoose.connection.on('error', (error) => {
   console.log(error);
@@ -95,6 +95,6 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(8081, function () {
-  console.log(`Listening on ${server.address().port}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server started on port ${process.env.PORT || 3000}`);
 });
