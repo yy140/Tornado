@@ -11,14 +11,17 @@ var morgan = require('morgan');
 var session = require('express-session');
 var mongoose = require('mongoose');
 
- var mongoDb = process.env.MONGODB_URI || 'mongodb://localhost:27017/tornado';
- mongoose.connect(mongoDb, {
-   useNewUrlParser: true,
-   useUnifiedTopology: true
- });
+// setup mongo connection
+const uri = process.env.MONGO_CONNECTION_URL;
+mongoose.connect(uri, { useNewUrlParser : true, useCreateIndex: true });
+mongoose.connection.on('error', (error) => {
+  console.log(error);
+  process.exit(1);
+});
+mongoose.connection.on('connected', function () {
+  console.log('connected to mongo');
+});
 
- var db = mongoose.connection;
- db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
 app.engine('handlebars', exphbs());
