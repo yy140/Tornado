@@ -23,13 +23,13 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/game"> Dashboard</a>
+                        <a class="nav-link" href="/"> Homepage</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="game/menu"> Games </a>
+                        <a class="nav-link active" href="/signupToPlay"> Games </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout"> Log-out </a>
+                        <a class="nav-link" href="/login"> Log-In </a>
                     </li>
                 </ul>
             </div>
@@ -41,15 +41,34 @@
               <img src="assets/image1.jpg" class="d-block w-100" alt="...">
           </div>
           <div class="carousel-caption d-none d-md-block">
-              <br><br><br>
-            <h1>Welcome {{name}} </h1>
-            <h2>Why don't you start playing some games! </h2>
-            <br><br> 
-            <form action="/game/menu" method="get">
-                <button type="submit" class="btn btn-secondary btn-lg">PLAY</button>
+            <h2> Please sign-up to play our games </h2>
+            <br>
+            <form action="/signup" method="get">
+             <button type="submit" class="btn btn-secondary btn-lg">SIGN-UP</button>
             </form>
-           
-          </div>
+            <br><br>
+            <p> We provide a selection of games that meet everybody's taste. We hope you enjoy your experience with us. </p>
+            <br> 
+                <div class="container-fluid padding">
+                    <div class="row padding no-guters">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="assets/GAME1.png">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="assets/GAME2.png">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="assets/GAME3.jpeg">
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+    
         </div>
       </div>
 	

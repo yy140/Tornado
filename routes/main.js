@@ -12,6 +12,10 @@ router.get('/signup', function (req, res) {
   res.render('sign-up');
 });
 
+router.get('/signupToPlay', function(req,res){
+  res.render('sign-upToPlay');
+})
+
 router.post('/signup', asyncMiddleware( async (req, res, next) => {
   var { username, password } = req.body;
     await User.create({ username, password });
@@ -23,13 +27,15 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/login', (req, res, next) => {
-  console.log(req.body.username)
       User.findOne({
       username: req.body.username,
       }).then(function (user) {
         console.log(user)
       if (!user) {
-        res.render("index"); 
+        res.render("log-in", {
+          message: "This user is not registered",
+          messageClass: "light-danger",
+        }); 
       } else {
         bcrypt.compare(
           req.body.password,
@@ -37,11 +43,13 @@ router.post('/login', (req, res, next) => {
           function (err, result) {
             if (result == true) {
               req.session.user = user;
-              console.log(user.password)
               res.redirect("/game");
             } else {
-              console.log(user.password)
-              res.render("index");
+              res.render("log-in", {
+                message: "incorrect password",
+                messageClass: "light-danger",
+              });
+              
             }
           }
         );

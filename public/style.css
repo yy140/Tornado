@@ -40,8 +40,8 @@ body{
   }
   
     
-  .carousel-caption h3{
-     font-size: 200%;
+  .carousel-caption h2{
+     font-size: 400%;
      font-weight: 500;
      text-shadow: 1px 1px 10px #000;
   }
@@ -82,10 +82,28 @@ body{
       background-clip: border-box;
       border: 1px solid rgba(0,0,0,.125);
       border-radius: .25rem;
+      border-color: rgba(0,0,0, 0.9);
+      box-shadow: 5px 5px 15px rgba(0,0,0, 0.9);
+
+      transition: 0.5s ease;
+      cursor: pointer;
   }
 
+  .card-title{
+      color:rgba(0,0,0, 0.9)
+  }
   #myGame{
       top:50%;
   }
 
- 
+  
+
+  .card:hover{
+    transform: scale(1.1);
+    box-shadow: 5px 5px 15px rgba(0,0,0, 0.6);
+ }
+
+ a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
