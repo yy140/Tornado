@@ -82,17 +82,28 @@ body{
       background-clip: border-box;
       border: 1px solid rgba(0,0,0,.125);
       border-radius: .25rem;
+      border-color: rgba(0,0,0, 0.9);
+      box-shadow: 5px 5px 15px rgba(0,0,0, 0.9);
+
+      transition: 0.5s ease;
+      cursor: pointer;
   }
 
+  .card-title{
+      color:rgba(0,0,0, 0.9)
+  }
   #myGame{
       top:50%;
   }
 
-  .fa-code, .fa-bold, .fa-css3, .fa-js-square, .fa-linux, .fa-github-alt{
-    font-size: 4em;
-    margin: 1 rem;
-  }
+  
 
   .card:hover{
-    color: #cf0909;
+    transform: scale(1.1);
+    box-shadow: 5px 5px 15px rgba(0,0,0, 0.6);
  }
+
+ a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
