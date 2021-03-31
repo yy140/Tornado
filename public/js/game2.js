@@ -49,6 +49,7 @@ var haveDoubleJumped= false;
 var endGame = false;
 var startTime;
 var i = 0;
+var lastTime = 0;
 
 
 function preload() {
@@ -111,7 +112,8 @@ function create() {
     }
     isPaused = !isPaused;
     
-  });
+  }
+  );
 
   trust_text = this.add.text(1400, 300, 'Just jump...trust me', { fontSize: '16px', fill: '#000'});
   gap_text = this.add.text(1800, 300, 'Mind the gap', { fontSize: '16px', fill: '#000'});
@@ -229,15 +231,15 @@ function create() {
     update_moving_platforms()
     
     isEndgame(time);
-    currentTime = this.time.now
-    if(currentTime - startTime>1000 && endGame==true){
+    
+    if(time - lastTime>1000 && endGame==true){
       i+=1
       if (i>10){
         createBird(4500, 300)
         i=0
       }
-      startTime = this.time.now;
-      count_down_text.setText(`You have survived for ${Math.round(currentTime/1000)} seconds`)
+      lastTime = time
+      count_down_text.setText(`You have survived for ${Math.round((time-startTime)/1000)} seconds`)
       count_down_text.setFontSize(28)
     }
     update_bird();
