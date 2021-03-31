@@ -51,7 +51,7 @@ function preload()
     }) 
   }
   
-  function create()
+function create()
   {
     const map = this.make.tilemap({key: 'tilemap',})
     const tileset = map.addTilesetImage('rogue', 'tiles')
@@ -110,7 +110,6 @@ gameWinText.on('pointerdown', () => {
   this.scene.restart(); // restart current scen
 });
 
-
        this.anims.create({
           key: 'spin',
           frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 7 }),
@@ -161,7 +160,7 @@ gameWinText.on('pointerdown', () => {
       this.physics.add.overlap(player, coins, collectCoin, null, this)
       this.physics.add.overlap(player, star, playerWin, null, this)
     
-            
+         
       this.anims.create({
         key:'walk',
         frames: this.anims.generateFrameNumbers('enemy', { start: 11, end: 12 }),
@@ -171,7 +170,9 @@ gameWinText.on('pointerdown', () => {
 
   }
 
+
 function update()
+
 {
   if (cursors.left.isDown){
     player.setVelocityX(-160);
@@ -199,8 +200,10 @@ function update()
   
 coins.getChildren().forEach((coin) => coin.anims.play( 'spin', true))
 
+
 enemies.getChildren().forEach((enemy) => { enemy.anims.play( 'walk', true);
 })
+
 
    moveZombies()
 }
@@ -211,6 +214,7 @@ function collectCoin(player, coin) {
 
 function enemyStrike() {
   this.physics.pause();
+
   player.setTint(0xff0000);
   player.anims.play('turn');
   gameOver = true;
@@ -223,6 +227,7 @@ function moveZombies() {
   enemy.setVelocityY(enemy.body.velocity.y + getRandomNumber())
 });
 }
+
 
 function playerWin() { 
   this.physics.pause()
