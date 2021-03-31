@@ -39,13 +39,16 @@ var trust_text;
 var isPaused = false;
 var acid;
 var gameOver = false;
-var bird;
+var birds;
 var moving_platform_1;
 var moving_platform_2;
 var theta = 0;
 var saw;
 var direction;
 var haveDoubleJumped= false;
+var endGame = false;
+var startTime;
+var i = 0;
 
 
 function preload() {
@@ -66,15 +69,13 @@ this.load.image('platform-300', '../assets/game_2/platform-300w.png');
 this.load.image('platform-400', '../assets/game_2/platform-400w.png');
 this.load.image('platform-500', '../assets/game_2/platform-500w.png');
 this.load.image('acid_1', '../assets/game_2/acid_1.png');
-this.load.image('saw', '../assets/game_2/saw.png');
+this.load.spritesheet('saw', '../assets/game_2/saw_sheet.png', { frameWidth:40, frameHeight:40 });
 
 this.cursors = this.input.keyboard.createCursorKeys();
 }
 
 function create() {
-  this.resources = 0;
-  this.timer = 0;
-
+  
   this.physics.world.setBounds(0, 0, 5000, 600);
   this.cameras.main.setBounds(0, 0, 5000, 600);
 
@@ -99,6 +100,7 @@ function create() {
   pause_text.on('pointerdown', () => { 
     if (isPaused == false){
       this.physics.pause();
+      //birds.getChildren().forEach(bird => bird.anims.stop());
       bird.anims.stop();
       player.anims.stop();
       pause_text.setText('Resume');
@@ -113,7 +115,8 @@ function create() {
 
   trust_text = this.add.text(1400, 300, 'Just jump...trust me', { fontSize: '16px', fill: '#000'});
   gap_text = this.add.text(1800, 300, 'Mind the gap', { fontSize: '16px', fill: '#000'});
-  // count_down_text=this.add.text(300, 200, 'Survive the countdown ', { fontSize: '48px', fill: '#e62e00'});
+  count_down_text=this.add.text(3800, 100, 'Survive  ', { fontSize: '48px', fill: '#e62e00'});
+  count_down_text.visible=false;
 
   platforms = this.physics.add.staticGroup();
   platforms.create(0, 500, 'platform-100');
@@ -147,13 +150,18 @@ function create() {
   player = this.physics.add.sprite(25, 300, 'dude');
   player.setOrigin(0.5,0.5)
 
-  //player.setBounce(0.01);
+  
   player.setCollideWorldBounds(true);
   cursors = this.input.keyboard.createCursorKeys();
 
-  bird = this.physics.add.sprite(500, 500, 'bird');
-  bird.body.setAllowGravity(false);
-  bird.setSize(24, 20).setOffset(8, 12);
+  birds = this.physics.add.group()
+  createBird(500, 300);
+
+  this.anims.create({ key: 'spin_saw', 
+    frames: this.anims.generateFrameNumbers('saw', {start:0, end:4}), 
+    frameRate: 10, 
+    repeat: -1 
+  });
 
   this.anims.create({ key: 'fly_right', 
     frames: this.anims.generateFrameNumbers('bird', {start:0, end:8}), 
@@ -204,27 +212,36 @@ function create() {
   this.physics.add.collider(player, moving_platform_2);
   this.physics.add.collider(player, saw, player_die, null, this);
   this.physics.add.collider(player, acid, player_die, null, this);
-  this.physics.add.collider(player, bird, player_die, null, this);
+  this.physics.add.collider(player, birds, player_die, null, this);
   
 
 
   }
 
   function update(time,delta){
+
+    console.log(startTime)
     if (gameOver){
       return;
     }
-    this.timer += delta;
-    while (this.timer > 1000) {
-        this.resources += 1;
-        this.timer -= 1000;
-    }
-   
+    
     theta+=0.01;
     update_moving_platforms()
     
+    isEndgame(time);
+    currentTime = this.time.now
+    if(currentTime - startTime>1000 && endGame==true){
+      i+=1
+      if (i>10){
+        createBird(4500, 300)
+        i=0
+      }
+      startTime = this.time.now;
+      count_down_text.setText(`You have survived for ${Math.round(currentTime/1000)} seconds`)
+      count_down_text.setFontSize(28)
+    }
     update_bird();
-
+    saw.anims.play('spin_saw', true)
     if(saw.body.position.x>2620){
       saw.body.velocity.x *=-1
     }
@@ -275,7 +292,7 @@ function player_die() {
   
 
   this.physics.pause();
-
+  
   player.setTint(0xff0000);
 
   player.anims.play('turn');
@@ -287,15 +304,18 @@ function player_die() {
 
 function update_bird(){
   if(isPaused == false){
-    if(bird.body.position.x < player.body.position.x){
-      bird.anims.play('fly_right', true);
-    }
-    else{
-      bird.anims.play('fly_left', true);
-    }
-    bird.body.position.x = bird.body.position.x + 0.006*(player.body.position.x - bird.body.position.x);
-    bird.body.position.y =  bird.body.position.y + 0.006*(player.body.y - bird.body.position.y);
-  }
+    birds.getChildren().forEach(bird => {
+      if(bird.body.position.x < player.body.position.x){
+        bird.anims.play('fly_right', true);
+      }
+      else{
+        bird.anims.play('fly_left', true);
+      }
+      bird.body.position.x = bird.body.position.x + 0.006*(player.body.position.x - bird.body.position.x);
+      bird.body.position.y =  bird.body.position.y + 0.006*(player.body.y - bird.body.position.y);
+    })
+  };
+    
 
 }
 function update_moving_platforms(){
@@ -304,4 +324,25 @@ function update_moving_platforms(){
   moving_platform_2.body.position.x += Math.cos(theta);
   moving_platform_2.body.position.y += Math.sin(-theta*2);
 }
+
+function isEndgame(time){
+  if (player.body.position.x>4100 && endGame==false){
+    endGame = true;
+    count_down_text.visible=true;
+    createBird(4500, 300)
+    startTime = time
+    
+  }
+}
+
+
+function createBird(x,y){
+  bird = birds.create(x, y, 'bird');
+  bird.body.setAllowGravity(false);
+  bird.setSize(24, 20).setOffset(8, 12);
+}
+
+
+
+
 
