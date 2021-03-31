@@ -1,8 +1,8 @@
 var config = {
   type: Phaser.AUTO,
   // parent: 'phaser-example',
-  width: 720,
-  height: 720,
+  width: 600,
+  height: 600,
   physics: {
     default: 'arcade',
     arcade: {
@@ -17,8 +17,8 @@ var config = {
   scale: {
     parent: 'myGame',
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 720,
-    height: 720
+    width: 602,
+    height: 602
   }
 };
 
@@ -55,9 +55,9 @@ function create()
   {
     const map = this.make.tilemap({key: 'tilemap',})
     const tileset = map.addTilesetImage('rogue', 'tiles')
-    const background = map.createLayer('background', tileset, 0, 0).setScale(3)
-    const blocked =  map.createLayer('blocked', tileset, 0, 0).setScale(3)
-    const blockedaboveplayer =  map.createLayer('blockedaboveplayer', tileset, 0, 0).setScale(3)    
+    const background = map.createLayer('background', tileset, 0, 0).setScale(2.50)
+    const blocked =  map.createLayer('blocked', tileset, 0, 0).setScale(2.50)
+    const blockedaboveplayer =  map.createLayer('blockedaboveplayer', tileset, 0, 0).setScale(2.50)    
     coinLayer = map.getObjectLayer('coins')['objects']
     blocked.setCollisionByProperty({ collides: true})
     blockedaboveplayer.setCollisionByProperty({ collides: true})
@@ -65,7 +65,7 @@ function create()
 
     coins = this.physics.add.staticGroup()
     coinLayer.forEach(object => {
-      let obj = coins.create(object.x * 2.75, object.y * 3, 'coin'); 
+      let obj = coins.create(object.x * 2.25, object.y * 2.5, 'coin'); 
          obj.setOrigin(0); 
          obj.body.width = object.width; 
          obj.body.height = object.height;
@@ -76,7 +76,7 @@ function create()
   map
   .filterObjects('enemies', (object) => object.type === 'enemy')
   .forEach((enemy) => {
-    let enemySprite = this.physics.add.sprite(enemy.x * 2.75, enemy.y * 3, 'enemy')
+    let enemySprite = this.physics.add.sprite(enemy.x * 2.25, enemy.y * 2.4, 'enemy')
     enemySprite.body.setImmovable(true)
     this.physics.add.collider(enemySprite, blocked)
     this.physics.add.collider(enemySprite, blockedaboveplayer)
@@ -88,9 +88,9 @@ function create()
 
 enemies.getChildren().forEach((enemy) => enemy.setScale(0.45).setSize(50, 50).setOffset(3,25).setCollideWorldBounds(true))
 
-star = this.physics.add.image(690, 120, 'star');
+star = this.physics.add.image(570, 90, 'star');
  
-gameOverText = this.add.text(400, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'});
+gameOverText = this.add.text(300, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'});
 gameOverText.setOrigin(0.5).setInteractive();
 gameOverText.visible = false
 gameOverText.on('pointerdown', () => { 
