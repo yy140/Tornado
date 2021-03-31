@@ -45,6 +45,7 @@ var moving_platform_2;
 var theta = 0;
 var saw;
 var direction;
+var haveDoubleJumped= false;
 
 
 function preload() {
@@ -252,14 +253,20 @@ function create() {
 
     if (didPressJump){
       this.canDoubleJump=true;
+      
       if (cursors.up.isDown && (player.body.onFloor() || player.body.touching.down)){
         this.canDoubleJump = true;
         player.body.setVelocityY(-300);
       }
-      else if(this.canDoubleJump){
+      else if(this.canDoubleJump && haveDoubleJumped==false){
+        haveDoubleJumped = true;
         this.canDoubleJump = false;
         player.body.setVelocityY(-300);
       }
+    
+    }
+    if(player.body.touching.down){
+      haveDoubleJumped=false;
     }
 
 };
