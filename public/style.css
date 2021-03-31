@@ -40,8 +40,8 @@ body{
   }
   
     
-  .carousel-caption h3{
-     font-size: 200%;
+  .carousel-caption h2{
+     font-size: 400%;
      font-weight: 500;
      text-shadow: 1px 1px 10px #000;
   }
@@ -88,4 +88,11 @@ body{
       top:50%;
   }
 
- 
+  .fa-code, .fa-bold, .fa-css3, .fa-js-square, .fa-linux, .fa-github-alt{
+    font-size: 4em;
+    margin: 1 rem;
+  }
+
+  .card:hover{
+    color: #cf0909;
+ }
