@@ -113,7 +113,7 @@ function create() {
 
   trust_text = this.add.text(1400, 300, 'Just jump...trust me', { fontSize: '16px', fill: '#000'});
   gap_text = this.add.text(1800, 300, 'Mind the gap', { fontSize: '16px', fill: '#000'});
-  count_down_text=this.add.text(300, 200, 'Survive the countdown ', { fontSize: '48px', fill: '#e62e00'});
+  // count_down_text=this.add.text(300, 200, 'Survive the countdown ', { fontSize: '48px', fill: '#e62e00'});
 
   platforms = this.physics.add.staticGroup();
   platforms.create(0, 500, 'platform-100');
