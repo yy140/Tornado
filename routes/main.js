@@ -42,6 +42,8 @@ router.post('/login', (req, res, next) => {
           user.password,
           function (err, result) {
             if (result == true) {
+              req.user = user;
+              delete req.user.password;
               req.session.user = user;
               res.redirect("/game");
             } else {
