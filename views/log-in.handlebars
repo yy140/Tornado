@@ -10,6 +10,7 @@
     </head>
  
     <body>
+        
         <script src="/socket.io/socket.io.js"></script>
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg py-5" id="mainNavbar">
             <div class="container-fluid">
@@ -49,7 +50,12 @@
                             <label for="exampleInputPassword1"><H3>PASSWORD</H3></label>
                             <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                         </div>
-                        <BR><br><br>
+                        {{#if message}}
+                        <div class="alert {{messageClass}}" role="alert">
+                         {{message}}
+                    </div>
+                    {{/if}}
+    
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
