@@ -7,7 +7,7 @@ var config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 0 },
-      debug: false
+      debug: true
     }
   },
   scene: {
@@ -27,7 +27,9 @@ var game = new Phaser.Game(config);
 var player
 var coins
 var coinLayer
-
+var enemies
+var enemyLayer
+var gameOver = false
 
 function preload() 
   {
@@ -35,7 +37,7 @@ function preload()
     this.load.image('tiles', '/assets/game3/rogue.png')
   
     // load the JSON file
-    this.load.tilemapTiledJSON('tilemap', '../assets/game3/levelOne.json' )
+    this.load.tilemapTiledJSON('tilemap', '/assets/game3/levelOne.json' )
     this.load.spritesheet('coin', '/assets/game3/coin.png', {
       frameWidth: 32,
       frameHeight: 32
@@ -44,7 +46,10 @@ function preload()
       frameWidth: 80,
       frameHeight: 110
     })
-     
+    this.load.spritesheet('enemy', '/assets/game3/zombie.png', {
+      frameWidth: 80,
+      frameHeight: 110
+    }) 
     
   }
   
@@ -69,19 +74,37 @@ function preload()
          obj.body.width = object.width; 
          obj.body.height = object.height;
          obj.setSize(25,25).setOffset(18, 15)
-    
-      
     })
 
-     //enemies = this.physics.add.group();
-    // enemies.enableBody = true;
+     
+    
+  enemies = this.add.group()
+  map
+  .filterObjects('enemies', (object) => object.type === 'enemy')
+  .forEach((enemy) => {
+    let enemySprite = this.physics.add.sprite(enemy.x * 2.75, enemy.y * 3, 'enemy')
+    enemySprite.body.setImmovable(true)
+    enemySprite.setCollideWorldBounds(true)
+    this.physics.add.collider(enemySprite, blocked)
+    this.physics.add.collider(enemySprite, blockedaboveplayer)
+    enemySprite.setVelocityX(getRandomNumber() * 1.25 )
+    enemySprite.setVelocityY(getRandomNumber() * 1.25)
+    //enemySprite.id = enemy.id // I don't know if you have some sort of id you can pass here
+    enemies.add(enemySprite)
+  })
+enemies.enableBody = true;
+     
+enemies.getChildren().forEach((enemy) => enemy.setScale(0.45).setSize(60, 90).setOffset(0,25))
 
-    // enemyLayer.forEach(object => {
-    //   let obj = enemies.create(object.x * 2.75, object.y * 3, 'enemy'); 
-    //      obj.setOrigin(0); 
-    //      obj.body.width = object.width; 
-    //      obj.body.height = object.height;
-    //      obj.setSize(10,25).setOffset(18, 15)})
+gameOverText = this.add.text(400, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'});
+gameOverText.setOrigin(0.5).setInteractive();
+gameOverText.visible = false
+gameOverText.on('pointerdown', () => { 
+  gameOver = false;
+  this.registry.destroy(); // destroy registry
+  this.events.off(); // disable all active events
+  this.scene.restart(); // restart current scen
+});
 
        this.anims.create({
           key: 'spin',
@@ -90,8 +113,7 @@ function preload()
           repeat: -1
         });
             
-
-        player = this.physics.add.sprite(100, 680, 'boy').setScale(0.4);
+        player = this.physics.add.sprite(100, 680, 'boy').setScale(0.4).setSize(50,100);
         this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('boy', { start: 0, end: 3 }),
@@ -102,7 +124,7 @@ function preload()
       this.anims.create({
         key: 'turn',
         frames: [ { key: 'boy', frame: 23 } ],
-        frameRate: 20
+        frameRate: 0
       });
     
       this.anims.create({
@@ -125,13 +147,19 @@ function preload()
       });
       cursors = this.input.keyboard.createCursorKeys();
       
+      
       player.setCollideWorldBounds(true)
       this.physics.add.collider(player, blocked)
       this.physics.add.collider(player, blockedaboveplayer)
       //this.physics.add.collider(player, coinLayer)
-      //this.physics.add.collider(player, enemies)
+      this.physics.add.collider(player, enemies, enemyStrike, null, this)
       this.physics.add.overlap(player, coins, collectCoin, null, this)
+      
 
+
+      // enemies.getChildren().forEach((enemy) => { 
+      //   this.physics.add.collider(enemy, blocked)
+      //   this.physics.add.collider(enemy, blockedaboveplayer) })
       //add a score
       // text = this.add.text(570, 70, `Coins: ${coinScore}x`, {
       //   fontSize: '20px',
@@ -139,10 +167,17 @@ function preload()
       // });
       // text.setScrollFactor(0);
       
+      this.anims.create({
+        key:'walk',
+        frames: this.anims.generateFrameNumbers('enemy', { start: 11, end: 12 }),
+        frameRate: 2,
+        repeat: -1
+      });
 
   }
 
   function update()
+  
 {
   if (cursors.left.isDown){
     player.setVelocityX(-160);
@@ -175,12 +210,39 @@ function preload()
   }
 
   coins.getChildren().forEach((coin) => coin.anims.play( 'spin', true))
+  
+  
+   enemies.getChildren().forEach((enemy) => { enemy.anims.play( 'walk', true);
+   })
 
+   moveZombies()
 }
 
 function collectCoin(player, coin) {
   coin.destroy(coin.x, coin.y); // remove the tile/coin
   // coinScore ++; // increment the score
   // text.setText(`Coins: ${coinScore}x`); // set the text to show the current score
-  return false;
+  return false
+
+}
+
+function enemyStrike() {
+  this.physics.pause();
+
+  player.setTint(0xff0000);
+
+  player.anims.play('turn');
+    gameOver = true;
+
+  gameOverText.visible = true;
+}
+
+function moveZombies() {
+  enemies.getChildren().forEach((enemy) => { 
+  enemy.setVelocityX(enemy.body.velocity.x + getRandomNumber())
+  enemy.setVelocityY(enemy.body.velocity.y + getRandomNumber())
+});
+}
+function getRandomNumber() {
+  return (Math.random() - 0.5) * 5
 }
