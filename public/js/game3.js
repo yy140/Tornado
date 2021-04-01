@@ -92,7 +92,7 @@ function create()
 
 enemies.getChildren().forEach((enemy) => enemy.setScale(0.45).setSize(45, 90).setOffset(5,25).setCollideWorldBounds(true))
 
-star = this.physics.add.image(580, 80, 'star');
+star = this.physics.add.image(580, 95, 'star');
  
 gameOverText = this.add.text(300, 300, "         Game Over\n Click here to try again!", { fontSize: '32px', fill: '#000'});
 gameOverText.setOrigin(0.5).setInteractive();
@@ -267,7 +267,6 @@ frames: this.anims.generateFrameNumbers('enemy', { start: 11, end: 12 }),
 frameRate: 2,
 repeat: -1
 });
-
 
 
 
